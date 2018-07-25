@@ -1,28 +1,38 @@
-import asyncnet, asyncdispatch
+import parseOpt, os, strutils, asyncnet, asyncdispatch
+from core/parseoptions import parseargs
+from network/p2p import serve
 
-var clients {.threadvar.}: seq[AsyncSocket]
+const HELP = """
+One - Simple Blockchain written by Nim lang
 
-proc processClient(client: AsyncSocket) {.async.} =
-  echo "foobar"
-  while true:
-    let line = await client.recvLine()
-    if line.len == 0: break
-    for c in clients:
-      await c.send(line & "\c\L")
+Usage:
+  one [options]
 
-proc serve() {.async.} =
-  clients = @[]
-  var server = newAsyncSocket()
-  server.setSockOpt(OptReuseAddr, true)
-  server.bindAddr(Port(8888))
-  server.listen()
-  
-  while true:
-    let client = await server.accept()
-    echo "hogehoge"
-    clients.add client
-    
-    asyncCheck processClient(client)
+Options:
+  ---help, -h                   Show help
+  --port-tcp=[PORT] , -t=[PORT] Specify TCP port
+  --port-rest=[PORT], -r=[PORT] Specify REST port
 
-asyncCheck serve()
-runForever()
+Example:
+  one -h
+  one --port-tcp=10300 --port-rest=10301
+"""
+
+proc main() =
+  let argsObj = commandLineParams().join(" ").parseargs
+  if argsObj.help:
+    echo HELP
+    return
+
+  if argsObj.portTcp == 0:
+    echo "TCP port doesn't specified"
+    return
+
+  if argsObj.portRest == 0:
+    echo "REST port doesn't specified"
+    return
+
+  asyncCheck serve(argsObj.portTcp)
+  runForever()
+
+main()
