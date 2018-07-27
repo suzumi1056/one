@@ -3,7 +3,9 @@ from ../core/log import info
 
 type
   Node* = object
+    PeerAddr*: string
     SeedNodes*: seq[string]
+    Addrs*: seq[string]
 
   Endpoint* = object
     ip*: string
@@ -38,5 +40,6 @@ proc serve*(port: int) {.async.} =
 
 proc connectPeers*(node: Node) {.async.} =
   info "connecting to peers..."
-  # for v in sequence:
+  for v in node.SeedNodes:
+    
     

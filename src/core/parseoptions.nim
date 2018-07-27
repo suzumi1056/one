@@ -23,7 +23,6 @@ proc parseargs*(args: string): oneOptions =
       of "t": options.portTcp = val.parseInt
       of "r": options.portRest = val.parseInt
     else: continue
-    echo fmt"[DEBUG] {options}"
     info options
 
     result = options
