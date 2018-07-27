@@ -23,3 +23,5 @@ proc serve*(port: int) {.async.} =
     clients.add client
     
     asyncCheck processClient(client)
+
+# proc connectPeers*() {.async.} =

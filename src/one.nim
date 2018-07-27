@@ -1,6 +1,7 @@
 import parseOpt, os, strutils, asyncnet, asyncdispatch
 from core/parseoptions import parseargs
-from network/p2p import serve
+from network/node import serve
+from config/config import loadConfig
 
 const HELP = """
 One - Simple Blockchain written by Nim lang
@@ -19,6 +20,7 @@ Example:
 """
 
 proc main() =
+  let config = loadConfig()
   let argsObj = commandLineParams().join(" ").parseargs
   if argsObj.help:
     echo HELP
