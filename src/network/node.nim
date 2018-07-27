@@ -1,9 +1,21 @@
 import asyncnet, asyncdispatch, os, parseOpt
+from ../core/log import info
+
+type
+  Node* = object
+    SeedNodes*: seq[string]
+
+  Endpoint* = object
+    ip*: string
+    port*: uint16
+  
+  Peer* = object
+    endpoint*: Endpoint 
 
 var clients {.threadvar.}: seq[AsyncSocket]
 
 proc processClient(client: AsyncSocket) {.async.} =
-  echo "foobar"
+  info "foobar"
   while true:
     let line = await client.recvLine()
     if line.len == 0: break
@@ -19,9 +31,12 @@ proc serve*(port: int) {.async.} =
   
   while true:
     let client = await server.accept()
-    echo "hogehoge"
+    info "hogehoge"
     clients.add client
     
     asyncCheck processClient(client)
 
-# proc connectPeers*() {.async.} =
+proc connectPeers*(node: Node) {.async.} =
+  info "connecting to peers..."
+  # for v in sequence:
+    

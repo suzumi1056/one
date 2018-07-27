@@ -2,6 +2,7 @@ import parseOpt, os, strutils, asyncnet, asyncdispatch
 from core/parseoptions import parseargs
 from network/node import serve
 from config/config import loadConfig
+from core/log import info, error
 
 const HELP = """
 One - Simple Blockchain written by Nim lang
@@ -27,11 +28,11 @@ proc main() =
     return
 
   if argsObj.portTcp == 0:
-    echo "TCP port doesn't specified"
+    error "TCP port doesn't specified"
     return
 
   if argsObj.portRest == 0:
-    echo "REST port doesn't specified"
+    error "REST port doesn't specified"
     return
 
   asyncCheck serve(argsObj.portTcp)

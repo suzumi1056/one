@@ -1,4 +1,5 @@
 import parseopt, strformat, strutils
+from log import info
 
 type
   oneOptions* = object
@@ -23,5 +24,7 @@ proc parseargs*(args: string): oneOptions =
       of "r": options.portRest = val.parseInt
     else: continue
     echo fmt"[DEBUG] {options}"
+    info options
+
     result = options
 
