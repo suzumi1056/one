@@ -1,12 +1,12 @@
 import marshal, os
 
 type
-  Base = object of RootObj
+  Base* = object of RootObj
 
-  Config = object of Base
+  Config* = object of Base
     protocolConfiguration*: ProtocolConfiguration
 
-  ProtocolConfiguration = object of Base
+  ProtocolConfiguration* = object of Base
     seedList*: seq[string]
 
 proc loadConfig*(): Config =

@@ -1,6 +1,6 @@
 import parseOpt, os, strutils, asyncnet, asyncdispatch
 from core/parseoptions import parseargs
-from network/node import serve
+from network/node import newNode, serve, connectPeers
 from config/config import loadConfig
 from core/log import info, error
 
@@ -35,7 +35,12 @@ proc main() =
     error "REST port doesn't specified"
     return
 
-  asyncCheck serve(argsObj.portTcp)
+  let node = newNode(argsObj)
+  # run TCP server
+  asyncCheck node.serve()
+  # connect to each nodes
+  asyncCheck node.connectPeers()
+
   runForever()
 
 main()
