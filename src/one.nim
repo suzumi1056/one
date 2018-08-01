@@ -1,6 +1,6 @@
 import parseOpt, os, strutils, asyncnet, asyncdispatch
 from core/parseoptions import parseargs
-from network/node import newNode, serve, connectPeers
+from network/node import newNode, serve, connectPeers, close
 from config/config import loadConfig
 from core/log import info, error
 
@@ -21,7 +21,7 @@ Example:
 """
 
 proc main() =
-  let config = loadConfig()
+  # let config = loadConfig()
   let argsObj = commandLineParams().join(" ").parseargs
   if argsObj.help:
     echo HELP
@@ -42,5 +42,7 @@ proc main() =
   asyncCheck node.connectPeers()
 
   runForever()
+
+  node.close()
 
 main()
