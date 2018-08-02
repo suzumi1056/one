@@ -2,7 +2,7 @@ import parseOpt, os, strutils, asyncnet, asyncdispatch
 from core/parseoptions import parseargs
 from network/node import newNode, serve, connectPeers, close
 from config/config import loadConfig
-from core/log import info, error
+import core/log
 
 const HELP = """
 One - Simple Blockchain written by Nim lang

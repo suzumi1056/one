@@ -1,8 +1,7 @@
-import os
-import asyncnet, asyncdispatch, os, parseOpt, strutils, pegs, unicode, strformat, sequtils
+import os, asyncnet, asyncdispatch, os, parseOpt, strutils, pegs, unicode, strformat, sequtils
 from ../config/config import loadConfig, Config
 from ../core/parseoptions import oneOptions
-from ../core/log import info
+import ../core/log
 
 type
   Node* = ref object
@@ -57,6 +56,12 @@ proc serve*(node: Node) {.async.} =
     
     asyncCheck processClient(client)
 
+  info "Closing server socket..."
+  try:
+    server.close()
+  except:
+    discard
+
 proc connectPeers*(node: Node) {.async.} =
   info "connecting to peers..."
   for v in node.SeedNodes:
@@ -67,13 +72,14 @@ proc connectPeers*(node: Node) {.async.} =
       # while true:
       info fmt"connecting to node: {v}"
       let conn = await asyncnet.dial(adr[0], Port(adr[1].parseInt))
+      clients.add conn
       node.Addrs.add v
       info fmt"connected to node successfully: {v}"
       asyncCheck conn.send("Hello !!")
     except:
       connectionSuccess = false
       # 接続失敗したノードへ再接続したい
-      info fmt"cannot connection to {v}"
+      warn fmt"cannot connection to {v}"
 
     
 proc close*(node: Node) =

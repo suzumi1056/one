@@ -11,3 +11,9 @@ proc error*(msg: any) =
   stdout.write "[ERROR ", getClockStr(), "] "
   resetAttributes(stdout)
   echo $msg
+
+proc warn*(msg: any) =
+  setForegroundColor(stdout, fgYellow)
+  stdout.write "[WARN ", getClockStr(), "] "
+  resetAttributes(stdout)
+  echo $msg

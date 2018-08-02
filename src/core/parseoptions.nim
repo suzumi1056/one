@@ -1,5 +1,5 @@
 import parseopt, strformat, strutils
-from log import info
+import log
 
 type
   oneOptions* = object
