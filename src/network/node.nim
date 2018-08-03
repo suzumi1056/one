@@ -78,9 +78,9 @@ proc connectPeers*(node: Node) {.async.} =
       asyncCheck conn.send("Hello !!")
     except:
       connectionSuccess = false
-      # 接続失敗したノードへ再接続したい
+      # TODO: reconnect to connection failed node
       warn fmt"cannot connection to {v}"
 
-    
+
 proc close*(node: Node) =
   node.Listener.close()

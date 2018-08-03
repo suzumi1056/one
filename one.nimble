@@ -9,4 +9,6 @@ bin           = @["one"]
 
 # Dependencies
 
-requires "nim >= 0.18.0"
+requires "nim >= 0.18.0",
+         "secp256k1",
+         "nimcrypto"
