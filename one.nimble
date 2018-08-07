@@ -11,4 +11,5 @@ bin           = @["one"]
 
 requires "nim >= 0.18.0",
          "secp256k1",
-         "nimcrypto"
+         "base58",
+         "nimsha2"

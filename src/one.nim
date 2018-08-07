@@ -1,8 +1,9 @@
-import parseOpt, os, strutils, asyncnet, asyncdispatch
+import parseOpt, os, strutils, asyncnet, asyncdispatch, strformat
 from core/parseoptions import parseargs
 from network/node import newNode, serve, connectPeers, close
 from config/config import loadConfig
 import core/log
+import wallet/privateKey
 
 const HELP = """
 One - Simple Blockchain written by Nim lang
@@ -40,6 +41,11 @@ proc main() =
   asyncCheck node.serve()
   # connect to each nodes
   asyncCheck node.connectPeers()
+
+  let keyPair = privateKey.newKeyPair("hogehoge")
+  info fmt"private key: {keyPair.seckey}"
+  info fmt"public key: {keyPair.pubkey}"
+  info fmt"address: {keyPair.pubkey.base58Encode}"
 
   runForever()
 

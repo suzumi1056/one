@@ -1,3 +1,3 @@
-type
-  Account* = ref object
-    privateKey*: 
+# type
+#   Account* = ref object
+#     privateKey*: 
