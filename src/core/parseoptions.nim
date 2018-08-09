@@ -6,6 +6,10 @@ type
     help*: bool
     portTcp*: int
     portRest*: int
+    wallet*: walletOptions
+  
+  walletOptions* = object
+    passPhrase*: string
 
 proc parseargs*(args: string): oneOptions =
   var options = oneOptions(help: false, portTcp: 0, portRest: 0)
@@ -17,6 +21,7 @@ proc parseargs*(args: string): oneOptions =
       of "help": options.help = true
       of "port-tcp": options.portTcp = val.parseInt
       of "port-rest": options.portRest = val.parseInt
+      of "wallet-create": options.wallet.passPhrase = val
     of cmdShortOption:
       case key
       of "h": options.help = true

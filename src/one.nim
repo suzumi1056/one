@@ -4,6 +4,7 @@ from network/node import newNode, serve, connectPeers, close
 from config/config import loadConfig
 import core/log
 import wallet/privateKey
+import wallet/account
 
 const HELP = """
 One - Simple Blockchain written by Nim lang
@@ -15,6 +16,7 @@ Options:
   ---help, -h                   Show help
   --port-tcp=[PORT] , -t=[PORT] Specify TCP port
   --port-rest=[PORT], -r=[PORT] Specify REST port
+  --wallet-create=[pass phrase] Create wallet, input your pass phrase
 
 Example:
   one -h
@@ -27,6 +29,9 @@ proc main() =
   if argsObj.help:
     echo HELP
     return
+
+  if argsObj.wallet.passPhrase != "":
+    discard account.newAccount(argsObj.wallet.passPhrase)
 
   if argsObj.portTcp == 0:
     error "TCP port doesn't specified"
@@ -41,11 +46,6 @@ proc main() =
   asyncCheck node.serve()
   # connect to each nodes
   asyncCheck node.connectPeers()
-
-  let keyPair = privateKey.newKeyPair("hogehoge")
-  info fmt"private key: {keyPair.seckey}"
-  info fmt"public key: {keyPair.pubkey}"
-  info fmt"address: {keyPair.pubkey.base58Encode}"
 
   runForever()
 

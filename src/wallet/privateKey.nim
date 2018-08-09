@@ -5,8 +5,6 @@ import base58.bitcoin
 import nimSHA2 as sha2
 import ../core/log
 
-const
-  KeyLength* = 256 div 8
 
 type
   PublicKey* = object
@@ -27,7 +25,6 @@ proc newPrivateKey*(passPhrase: string): PrivateKey =
 
   result.data = passHex
   
-  
 proc getPublicKey*(seckey: PrivateKey): PublicKey =
   result.data = sha2.computeSHA256(seckey.data).toHex()
 
@@ -35,5 +32,5 @@ proc newKeyPair*(passPhrase: string): KeyPair =
   result.seckey = newPrivateKey(passPhrase)
   result.pubkey = result.seckey.getPublicKey()
 
-proc base58Encode*(pubkey: PublicKey): string =
-  result = bitcoin.encode(pubkey.data)
+proc encode*(pubkey: PublicKey): string =
+  result = bitcoin.encode(pubkey.data)  
